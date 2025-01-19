@@ -8,4 +8,4 @@ server.get('/', (req: Request, res: Response) => {
   res.send('Olá, mundo! Estou rodando em TypeScript!');
 });
 
-export {server}
+export { server };
