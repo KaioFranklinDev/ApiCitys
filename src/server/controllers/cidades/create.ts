@@ -1,4 +1,4 @@
-import { Request, Response } from 'express';
+import { RequestHandler } from 'express';
 import {  StatusCodes } from 'http-status-codes';
 import * as yup from 'yup';
 
@@ -13,10 +13,10 @@ const bodyValidation: yup.Schema<iCidades> = yup.object().shape({
   state: yup.string().required().min(3),
 });
 
-export const create = async (req: Request<{}, {}, iCidades>, res: Response)=>{
-  let validateDate:iCidades | undefined = undefined;
+export const crateBodyValidator: RequestHandler = async (req, res, next)=>{
   try{
-    validateDate = await bodyValidation.validate(req.body, {abortEarly : false});
+    await bodyValidation.validate(req.body, {abortEarly : false});
+    return next();
   } 
   catch(error) {
     const YupError = error as yup.ValidationError;
@@ -27,9 +27,15 @@ export const create = async (req: Request<{}, {}, iCidades>, res: Response)=>{
       Errors[err.path] = err.message;
     });
 
-    return res.status(StatusCodes.BAD_REQUEST).json({ Errors }) ;
+    res.status(StatusCodes.BAD_REQUEST).json({ Errors }) ;
+    return;
   }
 
-  return res.status(StatusCodes.CREATED).json(validateDate);
+};
+
+export const create : RequestHandler = async (req, res)=>{
+  
+  res.status(StatusCodes.CREATED).json(req.body);
+  return;
   
 };
