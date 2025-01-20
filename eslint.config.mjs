@@ -40,6 +40,7 @@ export default [
     },
     rules: {
       
+      
       ...tsPlugin.configs.recommended.rules,
       
       "semi": ["error", "always"],
@@ -52,6 +53,8 @@ export default [
       "comma-spacing": ["error", { "before": false, "after": true }],
 
       "indent": ["error", 2, { "SwitchCase": 1 }],
+
+      "@typescript-eslint/no-empty-object-type" : "off",
      
     },
   },
