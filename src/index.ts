@@ -1,5 +1,7 @@
+import './server/shared/services/TranslationYup';
 import {server} from "./server/Server";
 import dotenv from 'dotenv';
+
 dotenv.config();
 
 const PORT = process.env.PORT;
