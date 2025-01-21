@@ -1,6 +1,7 @@
 import { RequestHandler } from 'express';
 import {  StatusCodes } from 'http-status-codes';
 import * as yup from 'yup';
+import { validation } from '../../shared/middlewares';
 
 
 interface iCidades{
@@ -13,25 +14,25 @@ const bodyValidation: yup.Schema<iCidades> = yup.object().shape({
   state: yup.string().required().min(3),
 });
 
-export const crateBodyValidator: RequestHandler = async (req, res, next)=>{
-  try{
-    await bodyValidation.validate(req.body, {abortEarly : false});
-    return next();
-  } 
-  catch(error) {
-    const YupError = error as yup.ValidationError;
-    const Errors: Record<string, string> = {};
+interface ifilter{
+  rua:string
+  
+}
 
-    YupError.inner.forEach(err => {
-      if(!err.path) return;
-      Errors[err.path] = err.message;
-    });
+const filterValidation: yup.Schema<ifilter> = yup.object().shape({
+  rua: yup.string().required().min(5),
+  
+});
 
-    res.status(StatusCodes.BAD_REQUEST).json({ Errors }) ;
-    return;
-  }
 
-};
+export const createValidation = validation('body', bodyValidation);
+
+export const createFilterValidation = validation('body', filterValidation);
+
+
+
+
+
 
 export const create : RequestHandler = async (req, res)=>{
   

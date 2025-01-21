@@ -10,6 +10,6 @@ router.get('/', (_: Request, res: Response) => {
   res.send('Olá, mundo! Estou rodando em TypeScript!');
 });
 
-router.post('/cidades', CidadesController.crateBodyValidator, CidadesController.create);
+router.post('/cidades', CidadesController.createValidation, CidadesController.createFilterValidation, CidadesController.create);
 
 export { router };
