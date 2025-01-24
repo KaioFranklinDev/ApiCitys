@@ -4,8 +4,8 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-const PORT = process.env.PORT;
+const PORT = process.env.PORT || 3333;
 
-server.listen( PORT || "3333" , () => {
-  console.log(`Servidor rodando na porta ${PORT || 3333}`);
+server.listen( PORT, () => {
+  console.log(`Servidor rodando na porta ${PORT}`);
 });
