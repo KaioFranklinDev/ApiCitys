@@ -1,42 +1,30 @@
-import { RequestHandler } from 'express';
-import {  StatusCodes } from 'http-status-codes';
+import {  RequestHandler  } from 'express';
 import * as yup from 'yup';
+
 import { validation } from '../../shared/middlewares';
 
 
-interface iCidades{
-  name:string,
-  state:string
+interface ICidade {
+  nome: string;
+  estado: string;
 }
-
-const bodyValidation: yup.Schema<iCidades> = yup.object().shape({
-  name: yup.string().required().min(3),
-  state: yup.string().required().min(3),
-});
-
-interface ifilter{
-  rua:string
-  
+interface IFilter {
+  filter?: string;
 }
+export const createValidation = validation((getSchema) => ({
+  body: getSchema<ICidade>(yup.object().shape({
+    nome: yup.string().required().min(3),
+    estado: yup.string().required().min(3),
+  })),
+  query: getSchema<IFilter>(yup.object().shape({
+    filter: yup.string().required().min(3),
+  })),
+}));
 
-const filterValidation: yup.Schema<ifilter> = yup.object().shape({
-  rua: yup.string().required().min(5),
-  
-});
-
-
-export const createValidation = validation('body', bodyValidation);
-
-export const createFilterValidation = validation('body', filterValidation);
-
-
-
-
+export const create:RequestHandler = async (req, res) => {
+  console.log(req.body);
 
 
-export const create : RequestHandler = async (req, res)=>{
-  
-  res.status(StatusCodes.CREATED).json(req.body);
+  res.send('Create!');
   return;
-  
 };

@@ -55,7 +55,7 @@ export default [
       "indent": ["error", 2, { "SwitchCase": 1 }],
 
       "@typescript-eslint/no-empty-object-type" : "off",
-     
+      "@typescript-eslint/no-explicit-any" :"on"
     },
   },
 ];

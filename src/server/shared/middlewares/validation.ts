@@ -1,25 +1,45 @@
-import { RequestHandler } from "express";
-import { StatusCodes } from "http-status-codes";
-import * as yup from 'yup';
+import { RequestHandler } from 'express';
+import { AnyObject, Maybe, ObjectSchema, ValidationError } from 'yup';
+import { StatusCodes } from 'http-status-codes';
 
-interface Tvalidation {
-  (field: 'body' | 'header' | 'params' | 'query', scheme:yup.Schema): RequestHandler
-}
-export const validation: Tvalidation = (field, scheme) => async (req, res, next) => {
-  try {
-    await scheme.validate(req[field], { abortEarly: false });
+
+type TProperty = 'body' | 'header' | 'params' | 'query';
+
+type TGetSchema = <T extends Maybe<AnyObject>>(schema: ObjectSchema<T>) => ObjectSchema<T>
+
+type TAllSchemas = Record<TProperty, ObjectSchema<any>>;
+
+type TGetAllSchemas = (getSchema: TGetSchema) => Partial<TAllSchemas>;
+
+type TValidation = (getAllSchemas: TGetAllSchemas) => RequestHandler;
+
+export const validation: TValidation = (getAllSchemas) => async (req, res, next) => {
+  const schemas = getAllSchemas((schema) => schema);
+
+
+  const errorsResult: Record<string, Record<string, string>> = {};
+
+  Object.entries(schemas).forEach(([key, schema]) => {
+    try {
+      schema.validateSync(req[key as TProperty], { abortEarly: false });
+    } catch (err) {
+      const yupError = err as ValidationError;
+      const errors: Record<string, string> = {};
+
+      yupError.inner.forEach(error => {
+        if (error.path === undefined) return;
+        errors[error.path] = error.message;
+      });
+
+      errorsResult[key] = errors;
+    }
+  });
+
+
+  if (Object.entries(errorsResult).length === 0) {
     return next();
-  }
-  catch (error) {
-    const YupError = error as yup.ValidationError;
-    const Errors: Record<string, string> = {};
-
-    YupError.inner.forEach(err => {
-      if (!err.path) return;
-      Errors[err.path] = err.message;
-    });
-
-    res.status(StatusCodes.BAD_REQUEST).json({ Errors });
-    return;
+  } else {
+    res.status(StatusCodes.BAD_REQUEST).json({ errors: errorsResult });
+    return ;
   }
 };
