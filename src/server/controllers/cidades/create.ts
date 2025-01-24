@@ -18,7 +18,7 @@ export const createValidation = validation((getSchema) => ({
 
 export const create:RequestHandler = async (req, res) => {
 
-  res.status(StatusCodes.INTERNAL_SERVER_ERROR).send("Não emplementado!");
+  res.status(StatusCodes.CREATED).json(1);
 
   return;
 };

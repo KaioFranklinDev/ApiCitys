@@ -23,8 +23,11 @@
   },
   "scripts": {
     "dev": "nodemon --watch src --ext ts --exec ts-node src/index.ts",
-    "build": "npx tsc",
+    "build": "npm i && npx tsc",
     "start": "node dist",
     "test": "jest"
+  },
+  "engines": {
+    "node":"20.x"
   }
 }
