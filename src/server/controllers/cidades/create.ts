@@ -2,6 +2,7 @@ import {  RequestHandler  } from 'express';
 import * as yup from 'yup';
 import { validation } from '../../shared/middlewares';
 import { StatusCodes } from 'http-status-codes';
+import { knex } from '../../database';
 
 
 interface ICidade {
@@ -17,7 +18,6 @@ export const createValidation = validation((getSchema) => ({
 }));
 
 export const create:RequestHandler = async (req, res) => {
-
   res.status(StatusCodes.CREATED).json(1);
 
   return;
