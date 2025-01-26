@@ -2,23 +2,35 @@ import {  RequestHandler  } from 'express';
 import * as yup from 'yup';
 import { validation } from '../../shared/middlewares';
 import { StatusCodes } from 'http-status-codes';
-import { knex } from '../../database';
+import { ICidade } from '../../database/models';
+import { CidadesProvider } from '../../database/providers/cidedes';
 
 
-interface ICidade {
-  nome: string;
-  
-};
+
+
+interface IBodyProps extends Omit<ICidade, 'id'> {}
 
 export const createValidation = validation((getSchema) => ({
-  body: getSchema<ICidade>(yup.object().shape({
-    nome: yup.string().required().min(3)
+  body: getSchema<IBodyProps>(yup.object().shape({
+    nome: yup.string().required().min(3).max(150),
   })),
   
 }));
 
 export const create:RequestHandler = async (req, res) => {
-  res.status(StatusCodes.CREATED).json(1);
+
+  const result = await CidadesProvider.create(req.body);
+
+  if(result instanceof Error) {
+    res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+      erros: {
+        default: result.message
+      }
+    });
+    return;
+  };
+
+  res.status(StatusCodes.CREATED).json(result);
 
   return;
 };
