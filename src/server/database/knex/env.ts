@@ -5,7 +5,7 @@ export const development: Knex.Config = {
   client: 'sqlite3',
   useNullAsDefault: true,
   connection: {
-    filename: path.resolve(__dirname, '..', 'localStorage', 'devDB.sqlite'),
+    filename: path.resolve(__dirname, '..', '..', '..', '..', 'devDB.sqlite'),
     //filename: '../localStorage/devDB.sqlite',
   },
   migrations: {

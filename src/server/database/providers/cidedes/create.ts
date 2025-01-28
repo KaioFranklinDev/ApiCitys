@@ -14,7 +14,7 @@ export const create = async (cidade: Omit<ICidade, 'id'>) : Promise<number | Err
 
         return new Error('Erro ao cadastrar o Registro! Not OBJECT or NUMBER');
     } catch (error) {
-        
+        console.log(error)
         return new Error('Erro ao cadastrar o Registro! Error SQL');
     }
     
