@@ -38,7 +38,7 @@ export const deleteById: RequestHandler = async (req: Request<IParamsProps>, res
     });
     return;
   }
-  res.status(StatusCodes.OK).send(`Cidade do id:${req.params.id} apagada com sucesso!`);
+  res.status(StatusCodes.OK).json({success: "Cidade apagada com sucesso!"});
   return;
 
 

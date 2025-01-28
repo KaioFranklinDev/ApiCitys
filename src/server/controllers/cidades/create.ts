@@ -30,7 +30,7 @@ export const create:RequestHandler = async (req, res) => {
     return;
   };
 
-  res.status(StatusCodes.CREATED).json(result);
+  res.status(StatusCodes.CREATED).json({"criado com o ID" : result});
 
   return;
 };

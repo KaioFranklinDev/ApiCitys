@@ -2,6 +2,8 @@ import {  Request, RequestHandler  } from 'express';
 import * as yup from 'yup';
 import { validation } from '../../shared/middlewares';
 import { StatusCodes } from 'http-status-codes';
+import { parse } from 'path';
+import { CidadesProvider } from '../../database/providers/cidedes';
 
 
 interface IQuaryParams {
@@ -16,8 +18,22 @@ export const getByIdValidation = validation((getSchema) => ({
 }));
 
 export const getById:RequestHandler = async (req:Request<IQuaryParams>, res) => {
-  console.log(req.params);
-  res.status(StatusCodes.INTERNAL_SERVER_ERROR).send("toma ID Teresina!");
 
+  
+  const id = Number(req.params.id);
+
+  if(typeof id !== "number"){
+    res.status(StatusCodes.BAD_REQUEST).send("Erro na validação");
+    return;
+  }
+
+  const response = await CidadesProvider.GetById(id)
+  
+  if(response instanceof Error){
+    res.status(StatusCodes.BAD_REQUEST).send(response.message);
+    return
+  }
+
+  res.status(StatusCodes.OK).send(response);
   return;
 };
