@@ -6,14 +6,14 @@ import { GetAll } from '../../database/providers/cidedes/getAll';
 import { CidadesProvider } from '../../database/providers/cidedes';
 
 
-interface IQuaryProps {
+interface IQueryProps {
   page?: number | null;
   limit?: number | null;
   filter?: string | null;
 }
 
 export const getAllValidation = validation((getSchema) => ({
-  query: getSchema<IQuaryProps>(yup.object().shape({
+  query: getSchema<IQueryProps>(yup.object().shape({
     page: yup.number().notRequired().moreThan(0),
     limit: yup.number().notRequired().moreThan(0),
     filter: yup.string().notRequired(),
@@ -21,17 +21,19 @@ export const getAllValidation = validation((getSchema) => ({
 
 }));
 
-export const getAll: RequestHandler = async (req: Request<{}, {}, {}, IQuaryProps>, res) => {
-  const {filter, limit, page} = req.query;
-  const parsedLimit = Number(limit);
-  const parsedPage = Number(page);
-  if(typeof(filter) === "string" && typeof(parsedLimit) === "number" && typeof(parsedPage) === "number" ){
-    const data = await CidadesProvider.GetAll(filter, parsedLimit, parsedPage);
-    res.status(StatusCodes.OK).json(data);
-    return
-  };
+export const getAll: RequestHandler = async (req: Request<{}, {}, {}, IQueryProps>, res) => {
+  const data = await CidadesProvider.GetAll(req.query.filter || "" , req.query.limit || 10 , req.query.page || 1 );
   
-  res.status(StatusCodes.INTERNAL_SERVER_ERROR).send("Erro de dados enviados");
+  if(data instanceof Error){
+    res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+      errors:{
+        default : data.message
+      }
+    });
   
+    return;
+  }
+
+  res.status(StatusCodes.OK).json(data)
   return;
 };

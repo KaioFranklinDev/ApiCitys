@@ -25,7 +25,7 @@
   },
   "scripts": {
     "dev": "nodemon --watch src --ext ts --exec ts-node src/index.ts",
-    "build": "npm i && npx tsc && npm run knex:rollback-all && npm run knex:migrate",
+    "build": "npm i && npx tsc && npm run knex:rollback-all && npm run knex:migrate && npm run knex:seed",
     "start": "node dist",
     "test": "jest",
     "knex:rollback-all":"knex --knexfile ./src/server/database/knex/env.ts migrate:rollback --all",
