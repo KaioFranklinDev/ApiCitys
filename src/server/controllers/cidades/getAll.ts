@@ -2,8 +2,8 @@ import { Request, RequestHandler } from 'express';
 import * as yup from 'yup';
 import { validation } from '../../shared/middlewares';
 import { StatusCodes } from 'http-status-codes';
-import { GetAll } from '../../database/providers/cidedes/getAll';
-import { CidadesProvider } from '../../database/providers/cidedes';
+import { GetAll } from '../../providers/cidedes/getAll';
+import { CidadesProvider } from '../../providers/cidedes';
 
 
 interface IQueryProps {

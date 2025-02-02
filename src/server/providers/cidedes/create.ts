@@ -1,5 +1,5 @@
-import { ETableNames } from "../../ETableNames";
-import { Knex } from "../../knex";
+import { ETableNames } from "../../database/ETableNames";
+import { Knex } from "../../database/knex";
 import { ICidade } from "../../models";
 
 export const create = async (cidade: Omit<ICidade, 'id'>) : Promise<number | Error> => {

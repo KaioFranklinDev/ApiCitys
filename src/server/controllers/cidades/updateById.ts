@@ -2,8 +2,8 @@ import { Request, RequestHandler } from 'express';
 import * as yup from 'yup';
 import { validation } from '../../shared/middlewares';
 import { StatusCodes } from 'http-status-codes';
-import { ICidade } from '../../database/models';
-import { CidadesProvider } from '../../database/providers/cidedes';
+import { ICidade } from '../../models';
+import { CidadesProvider } from '../../providers/cidedes';
 
 
 interface IParamsProps {

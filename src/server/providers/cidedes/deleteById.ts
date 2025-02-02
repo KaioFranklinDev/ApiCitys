@@ -1,5 +1,5 @@
-import { ETableNames } from "../../ETableNames";
-import { Knex } from "../../knex";
+import { ETableNames } from "../../database/ETableNames";
+import { Knex } from "../../database/knex";
 
 export const DeleteById = async (id: number): Promise<void | Error> => {
   try {

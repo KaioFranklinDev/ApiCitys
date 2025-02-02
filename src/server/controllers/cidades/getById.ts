@@ -3,7 +3,7 @@ import * as yup from 'yup';
 import { validation } from '../../shared/middlewares';
 import { StatusCodes } from 'http-status-codes';
 import { parse } from 'path';
-import { CidadesProvider } from '../../database/providers/cidedes';
+import { CidadesProvider } from '../../providers/cidedes';
 
 
 interface IQuaryParams {

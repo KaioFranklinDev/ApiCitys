@@ -2,7 +2,7 @@ import { Request, RequestHandler } from 'express';
 import * as yup from 'yup';
 import { validation } from '../../shared/middlewares';
 import { StatusCodes } from 'http-status-codes';
-import { CidadesProvider } from '../../database/providers/cidedes';
+import { CidadesProvider } from '../../providers/cidedes';
 
 
 interface IParamsProps {
